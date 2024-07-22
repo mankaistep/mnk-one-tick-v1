@@ -1,12 +1,85 @@
-<div class="onetick-checkbox-container">
-  <input type="checkbox" id="one-tick-checkbox" name="one-tick" value="true">
-  <label for="one-tick">Add shipping protection ($5)</label>
-</div>
+<script>
+    const ONE_TICK_VARIANT_ID = 46150530793695;
+    const originalFetch = window.fetch;
+
+    window.fetch = async (...args) => {
+        const baseURL = window.location.origin;
+        const url = baseURL + args[0];
+
+        let isOneTick = false;
+        let oneTickChecked = false;
+
+        // Catch the event
+        if (url.includes('/cart/add')) {
+            console.log('Add to Cart request detected:', args);
+
+            // Check if one tick added
+            const urlObject = new URL(url);
+            const params = new URLSearchParams(urlObject.search);
+
+            if (params.get('one-tick') === 'true') {
+                isOneTick = true;
+            }
+
+            // Check if checkbox ticked
+            const checkbox = document.getElementById('one-tick-checkbox');
+            oneTickChecked = checkbox.checked;
+        }
+
+        // Call the original fetch function
+        const response = await originalFetch(...args);
+
+        if (oneTickChecked && !isOneTick) {
+            // Optionally handle the response
+            if (url.includes('/cart/add') && response.ok) {
+                // Add one tick
+                let formData = {
+                    'items': [{
+                        'id': ONE_TICK_VARIANT_ID,
+                        'quantity': 1
+                    }]
+                };
+
+                const oneTickAddResponse = await fetch(window.Shopify.routes.root + 'cart/add.js?one-tick=true', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                }).then(response => {
+                    return response.json();
+                }).catch((error) => {
+                    console.error('Error:', error);
+                });
+
+                if (oneTickAddResponse.ok) {
+                    const delay = ms => new Promise(res => setTimeout(res, ms));
+
+                    // Delay 1s before reloading the section
+                    await delay(1000);
+
+                    fetch(`${routes.cart_url}?section_id=main-cart-items`)
+                        .then((response) => response.text())
+                        .then((responseText) => {
+                            const html = new DOMParser().parseFromString(responseText, 'text/html');
+                            const sourceQty = html.querySelector('cart-items');
+                            this.innerHTML = sourceQty.innerHTML;
+                        })
+                        .catch(e => {
+                            console.error(e);
+                        });
+                }
+
+            }
+        }
+
+        return response;
+    };
+</script>
 
 {% schema %}
 {
-  "name": "One tick",
-  "target": "head"
+"name": "One tick",
+"target": "head"
 }
 {% endschema %}
-

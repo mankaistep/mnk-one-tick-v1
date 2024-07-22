@@ -3,7 +3,7 @@
 client_id = "1fb6ca005d2def6100737b25cde309ac"
 name = "one-tick-upsell-v2"
 handle = "one-tick-upsell-v2"
-application_url = "https://wayne-craig-segment-took.trycloudflare.com"
+application_url = "https://lid-theater-rose-tft.trycloudflare.com"
 embedded = true
 
 [build]
@@ -17,9 +17,9 @@ scopes = ""
 
 [auth]
 redirect_urls = [
-  "https://wayne-craig-segment-took.trycloudflare.com/auth/callback",
-  "https://wayne-craig-segment-took.trycloudflare.com/auth/shopify/callback",
-  "https://wayne-craig-segment-took.trycloudflare.com/api/auth/callback"
+  "https://lid-theater-rose-tft.trycloudflare.com/auth/callback",
+  "https://lid-theater-rose-tft.trycloudflare.com/auth/shopify/callback",
+  "https://lid-theater-rose-tft.trycloudflare.com/api/auth/callback"
 ]
 
 [webhooks]
