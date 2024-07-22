@@ -1,0 +1,1 @@
+"# mnk-one-tick-v1"  initgit add README.mdgit commit -m "first commit"git branch -M maingit remote add origin https://github.com/mankaistep/mnk-one-tick-v1.gitgit push -u origin main"

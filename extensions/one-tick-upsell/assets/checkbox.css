@@ -1,0 +1,37 @@
+.onetick-checkbox-container {
+    display: flex;
+    align-items: center;
+    margin: 10px 0;
+}
+
+.onetick-checkbox-container input[type="checkbox"] {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 20px;
+    height: 20px;
+    border: 2px solid #333;
+    border-radius: 4px;
+    margin-right: 10px;
+    transition: background-color 0.3s, border-color 0.3s;
+    cursor: pointer;
+}
+
+.onetick-checkbox-container input[type="checkbox"]:checked {
+    background-color: #4CAF50;
+    border-color: #4CAF50;
+}
+
+.onetick-checkbox-container input[type="checkbox"]:checked::after {
+    content: '✔';
+    color: white;
+    display: block;
+    text-align: center;
+    font-size: 16px;
+    line-height: 18px;
+}
+
+.onetick-checkbox-container label {
+    font-size: 16px;
+    color: #333;
+    cursor: pointer;
+}
