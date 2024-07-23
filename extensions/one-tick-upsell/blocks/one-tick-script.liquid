@@ -2,6 +2,7 @@
     const ONE_TICK_VARIANT_ID = 46150530793695;
     const originalFetch = window.fetch;
 
+    // Catch add to cart event
     window.fetch = async (...args) => {
         const baseURL = window.location.origin;
         const url = baseURL + args[0];
@@ -11,8 +12,6 @@
 
         // Catch the event
         if (url.includes('/cart/add')) {
-            console.log('Add to Cart request detected:', args);
-
             // Check if one tick added
             const urlObject = new URL(url);
             const params = new URLSearchParams(urlObject.search);
@@ -23,6 +22,10 @@
 
             // Check if checkbox ticked
             const checkbox = document.getElementById('one-tick-checkbox');
+            if (!checkbox) {
+                return;
+            }
+
             oneTickChecked = checkbox.checked;
         }
 
@@ -37,9 +40,11 @@
                     'items': [{
                         'id': ONE_TICK_VARIANT_ID,
                         'quantity': 1
-                    }]
+                    }],
+                    "sections": "cart-drawer"
                 };
 
+                // Send request to add one-tick to cart
                 const oneTickAddResponse = await fetch(window.Shopify.routes.root + 'cart/add.js?one-tick=true', {
                     method: 'POST',
                     headers: {
@@ -52,22 +57,23 @@
                     console.error('Error:', error);
                 });
 
-                if (oneTickAddResponse.ok) {
-                    const delay = ms => new Promise(res => setTimeout(res, ms));
+                // Replace cart drawer section
+                if (oneTickAddResponse) {
+                    const htmlText = oneTickAddResponse.sections['cart-drawer'];
+                    const html = new DOMParser().parseFromString(htmlText, 'text/html');
+                    
+                    const cartDrawerHTML = html.querySelector('cart-drawer');
 
-                    // Delay 1s before reloading the section
-                    await delay(1000);
+                    const intervalDrawerChecking = setInterval(() => {
+                        const currentCartDrawerHTML = document.querySelector('cart-drawer');
+                        if (currentCartDrawerHTML && currentCartDrawerHTML.classList.contains('active')) {
+                            setTimeout(() => {
+                                currentCartDrawerHTML.innerHTML = cartDrawerHTML.innerHTML;
+                            }, 400);
+                            clearInterval(intervalDrawerChecking);
+                        }   
+                    }, 10);
 
-                    fetch(`${routes.cart_url}?section_id=main-cart-items`)
-                        .then((response) => response.text())
-                        .then((responseText) => {
-                            const html = new DOMParser().parseFromString(responseText, 'text/html');
-                            const sourceQty = html.querySelector('cart-items');
-                            this.innerHTML = sourceQty.innerHTML;
-                        })
-                        .catch(e => {
-                            console.error(e);
-                        });
                 }
 
             }
@@ -75,6 +81,37 @@
 
         return response;
     };
+</script>
+
+<script>
+    // Catch Buy it now event
+    setTimeout(() => {
+        // Select the button with the class 'shopify-payment-button__button'
+        var paymentButton = document.querySelector('.shopify-payment-button__button');
+        
+        // Check if the button exists
+        if (paymentButton) {
+            // Add a click event listener to the button
+            paymentButton.addEventListener('click', function() {
+                console.log('Payment button clicked 2!');
+
+                // Your custom logic here
+                const checkbox = document.getElementById('one-tick-checkbox');
+                if (!checkbox) {
+                    return;
+                }
+
+                if(checkbox.checked) {
+                    const currentVariant = ShopifyAnalytics.meta.selectedVariantId;
+                    window.location.href = window.Shopify.routes.root + 'cart/' + currentVariant + ":1," + ONE_TICK_VARIANT_ID + ":1?traffic_source=buy_now";
+                    console.log('yes baby');
+                }
+            });
+
+            console.log('Event added dit me 3 seconds');
+        }
+
+    }, 3000);
 </script>
 
 {% schema %}
