@@ -3,13 +3,12 @@
 client_id = "1fb6ca005d2def6100737b25cde309ac"
 name = "one-tick-upsell-v2"
 handle = "one-tick-upsell-v2"
-application_url = "https://fioricet-seventh-mathematics-surgeons.trycloudflare.com"
+application_url = "https://hk-guru-stamp-pj.trycloudflare.com"
 embedded = true
 
 [build]
 automatically_update_urls_on_dev = true
 dev_store_url = "quickstart-2c4b5a7b.myshopify.com"
-include_config_on_deploy = true
 
 [access_scopes]
 # Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
@@ -17,9 +16,9 @@ scopes = ""
 
 [auth]
 redirect_urls = [
-  "https://fioricet-seventh-mathematics-surgeons.trycloudflare.com/auth/callback",
-  "https://fioricet-seventh-mathematics-surgeons.trycloudflare.com/auth/shopify/callback",
-  "https://fioricet-seventh-mathematics-surgeons.trycloudflare.com/api/auth/callback"
+  "https://hk-guru-stamp-pj.trycloudflare.com/auth/callback",
+  "https://hk-guru-stamp-pj.trycloudflare.com/auth/shopify/callback",
+  "https://hk-guru-stamp-pj.trycloudflare.com/api/auth/callback"
 ]
 
 [webhooks]

@@ -50,3 +50,12 @@ model OneTick {
   createdAt     DateTime
   updatedAt     DateTime
 }
+
+model Settings {
+  id                Int       @id @default(autoincrement())
+  shopId            Int
+  oneTickContent    String?   @default("Add shipping protection ($10)")
+  oneTickVariantId  String
+  createdAt         DateTime
+  updatedAt         DateTime
+}
