@@ -10,13 +10,16 @@ import {
   InlineGrid,
   Button,
   InlineStack,
-  Badge
+  Badge,
+  Box
 } from "@shopify/polaris";
 import { authenticate } from "../shopify.server";
 
 import { useAppBridge } from "@shopify/app-bridge-react";
 
 import prisma from "../db.server"
+
+import { sendGraqhQL } from "./utils";
 
 export const loader = async ({ request }) => {
   const { session } = await authenticate.admin(request);
@@ -31,15 +34,58 @@ export const loader = async ({ request }) => {
   })
 
   // Create shop data
-  if (!shop) {
-    shop = await prisma.shop.create({
-      data: {
-        domain: currentShopDomain,
-        accessToken: session.accessToken,
-        createdAt: new Date(),
-        updatedAt: new Date()
+  if (!shop || !shop.appId) {
+    // Get shopify id
+    const queryShopGraphQL = `
+      query {
+        shop {
+          id
+          name
+          email
+        }
       }
-    })
+    `;
+    const data = await sendGraqhQL(queryShopGraphQL, currentShopDomain, session.accessToken);
+
+    const queryAppIdGraphQL = `
+      query {
+        currentAppInstallation {
+          id
+          app {
+            id
+          }
+        }
+      }
+    `;
+
+    const appInstallation = await sendGraqhQL(queryAppIdGraphQL, currentShopDomain, session.accessToken);
+    const appId = appInstallation.currentAppInstallation.app.id.replace('gid://shopify/App/', '');
+
+    if (!shop) {
+      shop = await prisma.shop.create({
+        data: {
+          domain: currentShopDomain,
+          shopify_id: data.shop.id,
+          email: data.shop.email,
+          app_id: appId,
+          name: data.shop.name,
+          accessToken: session.accessToken,
+          createdAt: new Date(),
+          updatedAt: new Date()
+        }
+      })
+    }
+    else if (!shop.app_id) {
+      shop = await prisma.shop.updateMany({
+        where: {
+          domain: currentShopDomain
+        },
+        data: {
+          app_id: appId
+        }
+      })
+    }
+
   }
 
   // Get one tick
@@ -72,8 +118,10 @@ export default function Index() {
 
   const oneTick = useLoaderData();
   const [oneTickStatus, setOneTickStatus] = useState(oneTick.status);
+  const [oneTickStatusChanging, setOneTickStatusChanging] = useState(false);
 
   const handleToggle = async () => {
+    setOneTickStatusChanging(true);
     try {
       const response = await fetch("/api/toggle", {
         method: "POST",
@@ -84,13 +132,13 @@ export default function Index() {
           id: oneTick.id
         })
       })
-      
 
       if (!response.ok) {
         throw new Error("Not okay :(")
       }
       
       const data = await response.json(); 
+      
 
       setOneTickStatus(data.status);
 
@@ -102,7 +150,10 @@ export default function Index() {
       }
     }
     catch (error) {
-      
+      console.log('Error while handling toggle: ', error);
+    }
+    finally {
+      setOneTickStatusChanging(false);
     }
   };
 
@@ -128,9 +179,15 @@ export default function Index() {
                 </BlockStack>
                 <BlockStack>
                   <InlineStack align="end">
-                    <Button variant={oneTickStatus ? "secondary" : "primary"} onClick={handleToggle}>
-                      {oneTickStatus ? "Disable" : "Enable"}
-                    </Button>
+                    <Box width="65px">
+                      {oneTickStatusChanging ?
+                        <Button loading fullWidth>
+                        </Button> : 
+                        <Button fullWidth variant={oneTickStatus ? "secondary" : "primary"} onClick={handleToggle}>
+                          {oneTickStatus ? "Disable" : "Enable"}
+                        </Button>
+                      }
+                    </Box>
                   </InlineStack>
                 </BlockStack>
               </InlineGrid>

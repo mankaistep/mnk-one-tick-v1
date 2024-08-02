@@ -93,7 +93,6 @@
         if (paymentButton) {
             // Add a click event listener to the button
             paymentButton.addEventListener('click', function() {
-                console.log('Payment button clicked 2!');
 
                 // Your custom logic here
                 const checkbox = document.getElementById('one-tick-checkbox');
@@ -104,11 +103,8 @@
                 if(checkbox.checked) {
                     const currentVariant = ShopifyAnalytics.meta.selectedVariantId;
                     window.location.href = window.Shopify.routes.root + 'cart/' + currentVariant + ":1," + ONE_TICK_VARIANT_ID + ":1?traffic_source=buy_now";
-                    console.log('yes baby');
                 }
             });
-
-            console.log('Event added dit me 3 seconds');
         }
 
     }, 3000);

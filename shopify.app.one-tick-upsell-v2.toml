@@ -3,7 +3,7 @@
 client_id = "1fb6ca005d2def6100737b25cde309ac"
 name = "one-tick-upsell-v2"
 handle = "one-tick-upsell-v2"
-application_url = "https://example-centers-briefly-hopkins.trycloudflare.com"
+application_url = "https://fioricet-seventh-mathematics-surgeons.trycloudflare.com"
 embedded = true
 
 [build]
@@ -17,9 +17,9 @@ scopes = ""
 
 [auth]
 redirect_urls = [
-  "https://example-centers-briefly-hopkins.trycloudflare.com/auth/callback",
-  "https://example-centers-briefly-hopkins.trycloudflare.com/auth/shopify/callback",
-  "https://example-centers-briefly-hopkins.trycloudflare.com/api/auth/callback"
+  "https://fioricet-seventh-mathematics-surgeons.trycloudflare.com/auth/callback",
+  "https://fioricet-seventh-mathematics-surgeons.trycloudflare.com/auth/shopify/callback",
+  "https://fioricet-seventh-mathematics-surgeons.trycloudflare.com/api/auth/callback"
 ]
 
 [webhooks]
