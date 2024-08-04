@@ -32,8 +32,8 @@ export const sendGraqhQL = async (query, storeDomain, accessToken) => {
     const result = await response.json();
 
     if (result.errors) {
-        console.log('GraphQL error: ', result.errors);
-        throw new Error(`GraphQL errors: ${response}`);
+        console.log('GraphQL error log: ', json(result));
+        throw new Error(`GraphQL errors: ${json(result)}`);
     }
 
     return result.data;

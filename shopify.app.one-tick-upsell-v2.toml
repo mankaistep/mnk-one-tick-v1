@@ -1,24 +1,25 @@
 # Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
 
 client_id = "1fb6ca005d2def6100737b25cde309ac"
-name = "one-tick-upsell-v2"
-handle = "one-tick-upsell-v2"
-application_url = "https://hk-guru-stamp-pj.trycloudflare.com"
+name = "App siêu cấp số 1 SBC"
+handle = "one-tick-upsell-sieu-cap"
+application_url = "https://tradition-bulletin-habitat-motion.trycloudflare.com"
 embedded = true
 
 [build]
 automatically_update_urls_on_dev = true
 dev_store_url = "quickstart-2c4b5a7b.myshopify.com"
+include_config_on_deploy = true
 
 [access_scopes]
 # Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
-scopes = ""
+scopes = "read_products"
 
 [auth]
 redirect_urls = [
-  "https://hk-guru-stamp-pj.trycloudflare.com/auth/callback",
-  "https://hk-guru-stamp-pj.trycloudflare.com/auth/shopify/callback",
-  "https://hk-guru-stamp-pj.trycloudflare.com/api/auth/callback"
+  "https://tradition-bulletin-habitat-motion.trycloudflare.com/auth/callback",
+  "https://tradition-bulletin-habitat-motion.trycloudflare.com/auth/shopify/callback",
+  "https://tradition-bulletin-habitat-motion.trycloudflare.com/api/auth/callback"
 ]
 
 [webhooks]

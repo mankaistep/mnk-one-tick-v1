@@ -110,7 +110,11 @@ export const loader = async ({ request }) => {
   return json(oneTick);
 };
 
-export const action = async ({ request }) => {};
+export const action = async ({ request }) => {
+  await authenticate.admin(request);
+
+  return null;
+};
 
 export default function Index() {
 

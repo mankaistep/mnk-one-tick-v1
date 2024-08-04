@@ -40,8 +40,8 @@
                     'items': [{
                         'id': ONE_TICK_VARIANT_ID,
                         'quantity': 1
-                    }],
-                    "sections": "cart-drawer"
+                    }]
+                    // "sections": "cart-drawer"
                 };
 
                 // Send request to add one-tick to cart
@@ -58,23 +58,23 @@
                 });
 
                 // Replace cart drawer section
-                if (oneTickAddResponse) {
-                    const htmlText = oneTickAddResponse.sections['cart-drawer'];
-                    const html = new DOMParser().parseFromString(htmlText, 'text/html');
+                // if (oneTickAddResponse) {
+                //     const htmlText = oneTickAddResponse.sections['cart-drawer'];
+                //     const html = new DOMParser().parseFromString(htmlText, 'text/html');
                     
-                    const cartDrawerHTML = html.querySelector('cart-drawer');
+                //     const cartDrawerHTML = html.querySelector('cart-drawer');
 
-                    const intervalDrawerChecking = setInterval(() => {
-                        const currentCartDrawerHTML = document.querySelector('cart-drawer');
-                        if (currentCartDrawerHTML && currentCartDrawerHTML.classList.contains('active')) {
-                            setTimeout(() => {
-                                currentCartDrawerHTML.innerHTML = cartDrawerHTML.innerHTML;
-                            }, 400);
-                            clearInterval(intervalDrawerChecking);
-                        }   
-                    }, 10);
+                //     const intervalDrawerChecking = setInterval(() => {
+                //         const currentCartDrawerHTML = document.querySelector('cart-drawer');
+                //         if (currentCartDrawerHTML && currentCartDrawerHTML.classList.contains('active')) {
+                //             setTimeout(() => {
+                //                 currentCartDrawerHTML.innerHTML = cartDrawerHTML.innerHTML;
+                //             }, 400);
+                //             clearInterval(intervalDrawerChecking);
+                //         }   
+                //     }, 10);
 
-                }
+                // }
 
             }
         }
@@ -107,7 +107,7 @@
             });
         }
 
-    }, 3000);
+    }, 2500);
 </script>
 
 {% schema %}
