@@ -2,7 +2,12 @@ import { json } from "@remix-run/react"
 
 import prisma from "../db.server";
 
-const updateSettings = async (shopDomain, newSettings) => {
+import { setMetafield } from "./utils";
+
+const METAFIELD_KEY = "onetick_settings_key";
+const METAFIELD_TYPE = "json";
+
+const updateSettingsToDB = async (shopDomain, newSettings) => {
 
   let result = {
     result: "failed",
@@ -65,6 +70,13 @@ const updateSettings = async (shopDomain, newSettings) => {
   return result;
 }
 
+const updateSettingsToMetafield = async(shopDomain, newSettings) => {
+
+  await setMetafield(shopDomain, METAFIELD_KEY, JSON.stringify(newSettings), METAFIELD_TYPE);
+
+  return true;
+}
+
 export const loader = async () => {}
 
 export const action = async ({ request }) => {
@@ -74,8 +86,14 @@ export const action = async ({ request }) => {
     const searchParams = url.searchParams;
     const domain = searchParams.get('domain');
 
+    const result = {
+      success: true,
+      message: "Updated to DB and Metafield!"
+    }
+    
+    await updateSettingsToDB(domain, jsonData);
 
-    const result = await updateSettings(domain, jsonData);
+    await updateSettingsToMetafield(domain, jsonData);
 
     return json(result);
 }

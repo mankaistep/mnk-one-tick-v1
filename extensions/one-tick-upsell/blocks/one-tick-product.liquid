@@ -1,7 +1,7 @@
-{% if shop.metafields.app--143117615105.onetick_status_2.value == 'true' %}
+{% if shop.metafields.app--143117615105.onetick_status_key.value == 'true' %}
   <div class="onetick-checkbox-container">
     <input type="checkbox" id="one-tick-checkbox" name="one-tick" value="true">
-    <label for="one-tick">Add shipping protection ($5)</label>
+    <label for="one-tick">{{ shop.metafields.app--143117615105.onetick_settings_key.value.oneTickContent }}</label>
   </div>
 {% endif %}
 

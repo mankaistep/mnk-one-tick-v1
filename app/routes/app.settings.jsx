@@ -53,6 +53,7 @@ export const loader = async ({ request }) => {
                 productVariant(id: "${settings.oneTickVariantId}") {
                     title
                     displayName
+                    price
                     image {
                         url
                         originalSrc
@@ -172,10 +173,13 @@ export default function Index() {
                                     <TextField label="Select one-tick product" placeholder="Search product" onFocus={async () => {
                                         const selectedVariants = await appBridge.resourcePicker({
                                             type: "variant",
-                                            action: "select"
+                                            action: "select",
+                                            multiple: false
                                         })
                                         if (selectedVariants?.length > 0) {
                                             const selectedVariant = selectedVariants[0];
+
+                                            console.log(selectedVariant);
                                             setOneTickVariant(selectedVariant);
 
                                             // Dispatch change event for Save bar
@@ -193,8 +197,8 @@ export default function Index() {
                                             <div style={{flex: 1}}>
                                                 <Box>
                                                     <BlockStack>
-                                                        <Text>{oneTickVariant.title}</Text>
-                                                        <Text tone="subdued">{oneTickVariant.displayName.replace(" - " + oneTickVariant.title, "")}</Text>
+                                                        <Text>{oneTickVariant.displayName.replace(" - " + oneTickVariant.title, "")}</Text>
+                                                        <Text tone="subdued">{"$" + oneTickVariant.price + ", " + oneTickVariant.title}</Text>
                                                     </BlockStack>
                                                 </Box>
                                             </div>

@@ -3,7 +3,7 @@
 client_id = "1fb6ca005d2def6100737b25cde309ac"
 name = "App siêu cấp số 1 SBC"
 handle = "one-tick-upsell-sieu-cap"
-application_url = "https://tradition-bulletin-habitat-motion.trycloudflare.com"
+application_url = "https://recovered-daisy-ee-models.trycloudflare.com"
 embedded = true
 
 [build]
@@ -17,9 +17,9 @@ scopes = "read_products"
 
 [auth]
 redirect_urls = [
-  "https://tradition-bulletin-habitat-motion.trycloudflare.com/auth/callback",
-  "https://tradition-bulletin-habitat-motion.trycloudflare.com/auth/shopify/callback",
-  "https://tradition-bulletin-habitat-motion.trycloudflare.com/api/auth/callback"
+  "https://recovered-daisy-ee-models.trycloudflare.com/auth/callback",
+  "https://recovered-daisy-ee-models.trycloudflare.com/auth/shopify/callback",
+  "https://recovered-daisy-ee-models.trycloudflare.com/api/auth/callback"
 ]
 
 [webhooks]

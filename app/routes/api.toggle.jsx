@@ -2,10 +2,10 @@ import { json } from "@remix-run/react"
 
 import prisma from "../db.server";
 
-import { sendGraqhQL } from './utils';
+import { setMetafield } from './utils';
 
-const METAFIELD_NAME = "verynewonetick";
-const METAFIELD_KEY = "onetick_status_2";
+const METAFIELD_KEY = "onetick_status_key";
+const METAFIELD_TYPE = "single_line_text_field";
 
 const dbUpdateOnetickStatus = async (oneTickId) => {
   const oneTick = await prisma.oneTick.findFirst({
@@ -32,7 +32,7 @@ const dbUpdateOnetickStatus = async (oneTickId) => {
   return newStatus;
 }
 
-const metafieldUpdateOnetickStatus = async(oneTickId, newStatus) => {
+const metafieldUpdateOnetickStatus = async (oneTickId, newStatus) => {
   // Get onetick from db
   const oneTick = await prisma.oneTick.findFirst({
     where: {
@@ -57,78 +57,7 @@ const metafieldUpdateOnetickStatus = async(oneTickId, newStatus) => {
     throw new Error(`Shop ${shopId} not found`);
   }
 
-  // Get private metafield
-  const queryMetafieldText = `
-    query {
-      metafieldDefinitions(first: 1, ownerType: SHOP, key: "${METAFIELD_KEY}") {
-        edges {
-          node {
-            name
-          }
-        }
-      }
-    }
-  `;
-
-  // Read metafield definiton
-  let oneTickMetafields = await sendGraqhQL(queryMetafieldText, shop.domain);
-
-  // If no metafield created
-  if (oneTickMetafields.metafieldDefinitions.edges.length == 0) {
-    // Create metafield
-    const queryCreateMetafield = `
-      mutation {
-        metafieldDefinitionCreate(definition: {
-          name: "${METAFIELD_NAME}",
-          key: "${METAFIELD_KEY}",
-          access: {
-            admin: PUBLIC_READ,
-            storefront: PUBLIC_READ
-          }
-          type: "single_line_text_field",
-          ownerType: SHOP
-        }) {
-          createdDefinition {
-            id
-            name
-          }
-          userErrors {
-            field
-            message
-            code
-          }
-        }
-      }
-    `;
-    await sendGraqhQL(queryCreateMetafield, shop.domain); 
-  }
-  // Set value
-  const querySetMetafield = `
-    mutation {
-      metafieldsSet(metafields: [
-        {
-          key: "${METAFIELD_KEY}",
-          ownerId: "${shop.shopify_id}",
-          value: "${newStatus}",
-          type: "single_line_text_field"
-        }
-      ]) {
-        metafields {
-          key
-          namespace
-          value
-          createdAt
-          updatedAt
-        }
-        userErrors {
-          field
-          message
-          code
-        }
-      }
-    }
-  `;
-  await sendGraqhQL(querySetMetafield, shop.domain);
+  await setMetafield(shop.domain, METAFIELD_KEY, newStatus, METAFIELD_TYPE);
 }
 
 export const loader = async () => {}

@@ -1,5 +1,5 @@
 <script>
-    const ONE_TICK_VARIANT_ID = 46150530793695;
+    const ONE_TICK_VARIANT_ID = "{{ shop.metafields.app--143117615105.onetick_settings_key.value.oneTickVariantId }}".replace("gid://shopify/ProductVariant/", "");
     const originalFetch = window.fetch;
 
     // Catch add to cart event
@@ -23,6 +23,7 @@
             // Check if checkbox ticked
             const checkbox = document.getElementById('one-tick-checkbox');
             if (!checkbox) {
+                console.log('yo wtf');
                 return;
             }
 
@@ -40,8 +41,8 @@
                     'items': [{
                         'id': ONE_TICK_VARIANT_ID,
                         'quantity': 1
-                    }]
-                    // "sections": "cart-drawer"
+                    }],
+                    "sections": "cart-drawer"
                 };
 
                 // Send request to add one-tick to cart
@@ -58,23 +59,23 @@
                 });
 
                 // Replace cart drawer section
-                // if (oneTickAddResponse) {
-                //     const htmlText = oneTickAddResponse.sections['cart-drawer'];
-                //     const html = new DOMParser().parseFromString(htmlText, 'text/html');
+                if (oneTickAddResponse) {
+                    const htmlText = oneTickAddResponse.sections['cart-drawer'];
+                    const html = new DOMParser().parseFromString(htmlText, 'text/html');
                     
-                //     const cartDrawerHTML = html.querySelector('cart-drawer');
+                    const cartDrawerHTML = html.querySelector('cart-drawer');
 
-                //     const intervalDrawerChecking = setInterval(() => {
-                //         const currentCartDrawerHTML = document.querySelector('cart-drawer');
-                //         if (currentCartDrawerHTML && currentCartDrawerHTML.classList.contains('active')) {
-                //             setTimeout(() => {
-                //                 currentCartDrawerHTML.innerHTML = cartDrawerHTML.innerHTML;
-                //             }, 400);
-                //             clearInterval(intervalDrawerChecking);
-                //         }   
-                //     }, 10);
+                    const intervalDrawerChecking = setInterval(() => {
+                        const currentCartDrawerHTML = document.querySelector('cart-drawer');
+                        if (currentCartDrawerHTML && currentCartDrawerHTML.classList.contains('active')) {
+                            setTimeout(() => {
+                                currentCartDrawerHTML.innerHTML = cartDrawerHTML.innerHTML;
+                            }, 400);
+                            clearInterval(intervalDrawerChecking);
+                        }   
+                    }, 10);
 
-                // }
+                }
 
             }
         }
