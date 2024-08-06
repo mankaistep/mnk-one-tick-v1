@@ -1,7 +1,5 @@
 import prisma from '../db.server';
 
-import { json } from '@remix-run/node';
-
 const METAFIELD_NAME = process.env.APP_METAFIELD_NAME;
 
 export const getEscapedNewSettingsJson = (text) => {
