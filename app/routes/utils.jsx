@@ -5,21 +5,24 @@ import { json } from '@remix-run/node';
 const METAFIELD_NAME = process.env.APP_METAFIELD_NAME;
 
 export const getEscapedNewSettingsJson = (text) => {
-
     // Properly escape the JSON string for embedding in the GraphQL mutation
     return text.replace(/\\/g, '\\\\').replace(/"/g, '\\"');
 }
 
-export const sendGraqhQL = async (query, storeDomain) => {
+export const sendGraqhQL = async (query, storeDomain, accessToken) => {
     const url = `https://${storeDomain}/admin/api/2024-07/graphql.json`;
 
-    const shop = await prisma.shop.findFirst({
-        where: {
-            domain: storeDomain
-        }
-    });
+    let token = accessToken;
 
-    const token = shop.accessToken;
+    if (!token) {
+        const shop = await prisma.shop.findFirst({
+            where: {
+                domain: storeDomain
+            }
+        });
+    
+        token = shop.accessToken;
+    }
 
     const response = await fetch(url, {
         method: 'POST',

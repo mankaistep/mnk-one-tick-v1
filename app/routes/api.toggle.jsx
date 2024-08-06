@@ -4,6 +4,8 @@ import prisma from "../db.server";
 
 import { setMetafield } from './utils';
 
+import { authenticate } from '../shopify.server';
+
 const METAFIELD_KEY = "onetick_status_key";
 const METAFIELD_TYPE = "single_line_text_field";
 
@@ -63,6 +65,14 @@ const metafieldUpdateOnetickStatus = async (oneTickId, newStatus) => {
 export const loader = async () => {}
 
 export const action = async ({ request }) => {
+    try {
+      await authenticate.admin(request);
+    }
+    catch (error) {
+      console.log('Error while authenticating request ', request);
+      console.log('Error', error);
+    }
+
     const jsonData = await request.json();
     const oneTickId = jsonData.id;
 

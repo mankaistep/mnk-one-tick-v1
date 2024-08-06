@@ -3,13 +3,12 @@
 client_id = "1fb6ca005d2def6100737b25cde309ac"
 name = "App siêu cấp số 1 SBC"
 handle = "one-tick-upsell-sieu-cap"
-application_url = "https://recovered-daisy-ee-models.trycloudflare.com"
+application_url = "https://pharmacology-resolved-jp-slots.trycloudflare.com"
 embedded = true
 
 [build]
 automatically_update_urls_on_dev = true
 dev_store_url = "quickstart-2c4b5a7b.myshopify.com"
-include_config_on_deploy = true
 
 [access_scopes]
 # Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
@@ -17,9 +16,9 @@ scopes = "read_products"
 
 [auth]
 redirect_urls = [
-  "https://recovered-daisy-ee-models.trycloudflare.com/auth/callback",
-  "https://recovered-daisy-ee-models.trycloudflare.com/auth/shopify/callback",
-  "https://recovered-daisy-ee-models.trycloudflare.com/api/auth/callback"
+  "https://pharmacology-resolved-jp-slots.trycloudflare.com/auth/callback",
+  "https://pharmacology-resolved-jp-slots.trycloudflare.com/auth/shopify/callback",
+  "https://pharmacology-resolved-jp-slots.trycloudflare.com/api/auth/callback"
 ]
 
 [webhooks]

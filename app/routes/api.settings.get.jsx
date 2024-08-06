@@ -23,6 +23,14 @@ const getSettings = async (shopDomain) => {
 }
 
 export const loader = async ({ request }) => {
+  try {
+    await authenticate.admin(request);
+  }
+  catch (error) {
+    console.log('Error while authenticating request ', request);
+    console.log('Error', error);
+  }
+  
   const url = new URL(request.url);
   const searchParams = url.searchParams;
 

@@ -80,6 +80,14 @@ const updateSettingsToMetafield = async(shopDomain, newSettings) => {
 export const loader = async () => {}
 
 export const action = async ({ request }) => {
+    try {
+      await authenticate.admin(request);
+    }
+    catch (error) {
+      console.log('Error while authenticating request ', request);
+      console.log('Error', error);
+    } 
+
     const jsonData = await request.json();
 
     const url = new URL(request.url);
