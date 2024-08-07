@@ -3,26 +3,31 @@
 client_id = "1fb6ca005d2def6100737b25cde309ac"
 name = "App siêu cấp số 1 SBC"
 handle = "one-tick-upsell-sieu-cap"
-application_url = "https://pharmacology-resolved-jp-slots.trycloudflare.com"
+application_url = "https://wv-status-practitioners-purse.trycloudflare.com"
 embedded = true
 
 [build]
 automatically_update_urls_on_dev = true
 dev_store_url = "quickstart-2c4b5a7b.myshopify.com"
+include_config_on_deploy = true
 
 [access_scopes]
 # Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
-scopes = "read_products"
+scopes = "read_orders,read_products"
 
 [auth]
 redirect_urls = [
-  "https://pharmacology-resolved-jp-slots.trycloudflare.com/auth/callback",
-  "https://pharmacology-resolved-jp-slots.trycloudflare.com/auth/shopify/callback",
-  "https://pharmacology-resolved-jp-slots.trycloudflare.com/api/auth/callback"
+  "https://wv-status-practitioners-purse.trycloudflare.com/auth/callback",
+  "https://wv-status-practitioners-purse.trycloudflare.com/auth/shopify/callback",
+  "https://wv-status-practitioners-purse.trycloudflare.com/api/auth/callback"
 ]
 
 [webhooks]
 api_version = "2024-07"
+
+  [[webhooks.subscriptions]]
+  topics = [ "orders/paid" ]
+  uri = "/webhooks"
 
 [pos]
 embedded = false

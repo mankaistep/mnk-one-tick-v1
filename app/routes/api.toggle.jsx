@@ -67,6 +67,7 @@ export const loader = async () => {}
 export const action = async ({ request }) => {
     try {
       await authenticate.admin(request);
+      console.log('toggle request: ', request);
     }
     catch (error) {
       console.log('Error while authenticating request ', request);

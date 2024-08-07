@@ -17,14 +17,12 @@ import {
     XIcon
 } from '@shopify/polaris-icons';
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import { authenticate } from "../shopify.server"
 import { Form, useLoaderData } from "@remix-run/react";
 
 import { json } from "@remix-run/node"
-
-import { sendGraqhQL } from "./utils";
 
 export const loader = async ({ request }) => {
     const { admin, session } = await authenticate.admin(request);
@@ -32,44 +30,10 @@ export const loader = async ({ request }) => {
     const domain = session.shop;
 
     const origin = new URL(request.url).origin;
-    const apiURL = `${origin}/api/settings/get?domain=${domain}`;
-
-    const response = await fetch(apiURL, {
-        method: "GET"
-      })
-
-    if (!response.ok) {
-        throw new Error("Not okay :(")
-    }
-      
-    const settings = await response.json(); 
-
-    let oneTickVariant = null;
-    let oneTickContent = settings?.oneTickContent ? settings.oneTickContent : null;
-
-    if (settings?.oneTickVariantId) {
-        const variantQuery = `
-            query {
-                productVariant(id: "${settings.oneTickVariantId}") {
-                    title
-                    displayName
-                    price
-                    image {
-                        url
-                        originalSrc
-                    }
-                }
-            }
-        `
-
-        const variantQueryData = await sendGraqhQL(variantQuery, domain, session.accessToken);
-        oneTickVariant = variantQueryData.productVariant;
-    }
 
     return json({
         domain: domain,
-        oneTickContent: oneTickContent,
-        oneTickVariant: oneTickVariant
+        origin: origin
     });
 }
 
@@ -87,8 +51,40 @@ export default function Index() {
     const domain = loaderData.domain;
 
     // One tick content
-    const [oneTickContent, setOneTickContent] = useState(loaderData.oneTickContent);
-    const [oneTickVariant, setOneTickVariant] = useState(loaderData.oneTickVariant);
+    const [oneTickContent, setOneTickContent] = useState("");
+    const [oneTickVariant, setOneTickVariant] = useState(undefined);
+
+    // Set one tick function
+    useEffect(() => {
+        const setOneTickData = async () => {
+            const apiURL = `/api/settings/get?domain=${domain}&variant=true`;
+        
+            const response = await fetch(apiURL, {
+                method: "GET"
+                })
+        
+            if (!response.ok) {
+                throw new Error("Not okay :(")
+            }
+                
+            const settings = await response.json(); 
+
+            let defaultOneTickVariant = null;
+            let defaultOneTickContent = null;
+        
+            defaultOneTickVariant = null;
+            defaultOneTickContent = settings?.oneTickContent ? settings.oneTickContent : null;
+        
+            if (settings?.oneTickVariantId) {
+                defaultOneTickVariant = settings.variant;
+            }
+
+            setOneTickContent(defaultOneTickContent);
+            setOneTickVariant(defaultOneTickVariant);
+        
+        }
+        setOneTickData();
+    }, [])
 
     // Save settings
     const handleSettingSave = async (settings) => {

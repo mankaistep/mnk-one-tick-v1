@@ -59,3 +59,17 @@ model Settings {
   createdAt         DateTime
   updatedAt         DateTime
 }
+
+model OneTickOrderLog {
+  id                      Int       @id @default(autoincrement())
+  webhookId               String
+  shopifyOrderId          String
+  shopifyOrderCreatedAt   DateTime
+  shopifyOrderCustomerId  String
+  customerEmail           String
+  subtotalPrice           Float
+  totalPrice              Float
+  oneTickPrice            Float
+  updatedAt               DateTime
+  createdAt               DateTime
+}

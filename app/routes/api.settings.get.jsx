@@ -2,7 +2,11 @@ import { json } from "@remix-run/react"
 
 import prisma from "../db.server";
 
-const getSettings = async (shopDomain) => {
+import { authenticate } from "../shopify.server";
+
+import { sendGraqhQL } from "./utils";
+
+const getSettings = async (shopDomain, variantIncluded) => {
   const shop = await prisma.shop.findFirst({
     where: {
       domain: shopDomain
@@ -18,7 +22,26 @@ const getSettings = async (shopDomain) => {
       shopId: shop.id
     }
   })
-  
+
+  if (variantIncluded) {
+      const variantQuery = `
+      query {
+            productVariant(id: "${settings.oneTickVariantId}") {
+                title
+                displayName
+                price
+                image {
+                    url
+                    originalSrc
+                }
+            }
+        }
+      `
+    const variantQueryData = await sendGraqhQL(variantQuery, shopDomain, shop.accessToken);
+    
+    settings.variant = variantQueryData.productVariant;
+  }
+
   return settings;
 }
 
@@ -29,14 +52,21 @@ export const loader = async ({ request }) => {
   catch (error) {
     console.log('Error while authenticating request ', request);
     console.log('Error', error);
+    
+    return json({
+      'success': 'fail'
+    })
   }
-  
+
   const url = new URL(request.url);
   const searchParams = url.searchParams;
 
   const domain = searchParams.get('domain');
 
-  const settings = await getSettings(domain);
+  // Check variant true
+  const variantIncluded = searchParams.has('variant') && searchParams.get('variant') == 'true';
+
+  const settings = await getSettings(domain, variantIncluded);
 
   return json(settings);
 }
