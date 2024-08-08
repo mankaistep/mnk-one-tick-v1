@@ -2,6 +2,7 @@ import { authenticate } from "../shopify.server";
 import db from "../db.server";
 
 export const action = async ({ request }) => {
+  console.log('alo ala!!!');
   const { topic, shop, session, admin, payload } = await authenticate.webhook(request);
 
   if (!admin) {
@@ -11,10 +12,12 @@ export const action = async ({ request }) => {
 
   // The topics handled here should be declared in the shopify.app.toml.
   // More info: https://shopify.dev/docs/apps/build/cli-for-apps/app-configuration
+  console.log('topic: ', topic);
+
   switch (topic) {
-    case "ORDER_PAID":
+    case "ORDERS_PAID":
       if (session) {
-        console.log(payload);
+        console.log('payload:', payload);
       }
     case "APP_UNINSTALLED":
       if (session) {

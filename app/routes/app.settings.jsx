@@ -99,8 +99,6 @@ export default function Index() {
         if (!response.ok) {
             throw new Error("Not okay :(")
         }
-          
-        const data = await response.json(); 
 
         appBridge.toast.show("Settings saved");
     }

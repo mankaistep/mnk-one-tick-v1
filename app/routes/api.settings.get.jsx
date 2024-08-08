@@ -23,23 +23,25 @@ const getSettings = async (shopDomain, variantIncluded) => {
     }
   })
 
-  if (variantIncluded) {
+  if (settings) {
+    if (variantIncluded && settings?.oneTickVariantId) {
       const variantQuery = `
-      query {
-            productVariant(id: "${settings.oneTickVariantId}") {
-                title
-                displayName
-                price
-                image {
-                    url
-                    originalSrc
-                }
-            }
-        }
-      `
-    const variantQueryData = await sendGraqhQL(variantQuery, shopDomain, shop.accessToken);
-    
-    settings.variant = variantQueryData.productVariant;
+        query {
+              productVariant(id: "${settings.oneTickVariantId}") {
+                  title
+                  displayName
+                  price
+                  image {
+                      url
+                      originalSrc
+                  }
+              }
+          }
+        `
+      const variantQueryData = await sendGraqhQL(variantQuery, shopDomain, shop.accessToken);
+      
+      settings.variant = variantQueryData.productVariant;
+    }
   }
 
   return settings;

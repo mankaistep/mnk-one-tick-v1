@@ -3,7 +3,7 @@
 client_id = "1fb6ca005d2def6100737b25cde309ac"
 name = "App siêu cấp số 1 SBC"
 handle = "one-tick-upsell-sieu-cap"
-application_url = "https://wv-status-practitioners-purse.trycloudflare.com"
+application_url = "https://austria-pressing-cord-drug.trycloudflare.com"
 embedded = true
 
 [build]
@@ -17,16 +17,16 @@ scopes = "read_orders,read_products"
 
 [auth]
 redirect_urls = [
-  "https://wv-status-practitioners-purse.trycloudflare.com/auth/callback",
-  "https://wv-status-practitioners-purse.trycloudflare.com/auth/shopify/callback",
-  "https://wv-status-practitioners-purse.trycloudflare.com/api/auth/callback"
+  "https://austria-pressing-cord-drug.trycloudflare.com/auth/callback",
+  "https://austria-pressing-cord-drug.trycloudflare.com/auth/shopify/callback",
+  "https://austria-pressing-cord-drug.trycloudflare.com/api/auth/callback"
 ]
 
 [webhooks]
 api_version = "2024-07"
 
   [[webhooks.subscriptions]]
-  topics = [ "orders/paid" ]
+  topics = [ "app/uninstalled", "orders/paid" ]
   uri = "/webhooks"
 
 [pos]

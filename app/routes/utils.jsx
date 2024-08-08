@@ -31,11 +31,11 @@ export const sendGraqhQL = async (query, storeDomain, accessToken) => {
         body: JSON.stringify({ query }),
     });
 
-    if (!response.ok) {
-        throw new Error(`GraphQL failed: ${response}`);
-    }
-
     const result = await response.json();
+
+    if (!response.ok) {
+        throw new Error(`GraphQL errors when executing ${JSON.stringify(query)} the error message: ${JSON.stringify(result)}`);
+    }
 
     if (result.errors) {
         throw new Error(`GraphQL errors when executing ${JSON.stringify(query)} the error message: ${JSON.stringify(result)}`);
