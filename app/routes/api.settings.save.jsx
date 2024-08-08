@@ -4,6 +4,8 @@ import prisma from "../db.server";
 
 import { setMetafield } from "./utils";
 
+import { authenticate } from "../shopify.server";
+
 const METAFIELD_KEY = "onetick_settings_key";
 const METAFIELD_TYPE = "json";
 
