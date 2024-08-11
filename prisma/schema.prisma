@@ -32,15 +32,16 @@ model Session {
 }
 
 model Shop {
-  id            Int       @id @default(autoincrement())
-  shopify_id    String?
-  app_id        String?
-  domain        String
-  name          String?
-  email         String?
-  accessToken   String
-  createdAt     DateTime
-  updatedAt     DateTime
+  id              Int       @id @default(autoincrement())
+  shopify_id      String?
+  app_id          String?
+  domain          String
+  name            String?
+  email           String?
+  currencyFormat  String?
+  accessToken     String
+  createdAt       DateTime
+  updatedAt       DateTime
 }
 
 model OneTick {
@@ -52,16 +53,17 @@ model OneTick {
 }
 
 model Settings {
-  id                Int       @id @default(autoincrement())
-  shopId            Int
-  oneTickContent    String?   @default("Add shipping protection ($10)")
-  oneTickVariantId  String?
-  createdAt         DateTime
-  updatedAt         DateTime
+  id                  Int       @id @default(autoincrement())
+  shopId              Int
+  oneTickContent      String?   @default("Add shipping protection")
+  oneTickVariantId    String?
+  createdAt           DateTime
+  updatedAt           DateTime
 }
 
 model OneTickOrderLog {
   id                      Int       @id @default(autoincrement())
+  shopId                  Int       
   webhookId               BigInt
   shopifyOrderId          String
   shopifyOrderCreatedAt   DateTime
